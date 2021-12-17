@@ -12,10 +12,10 @@ import com.bridgelabz.bookstore.user.dto.ForgotPasswordDTO;
 public interface IUserService 
 {
 	boolean verifyUser(String emailId);
-	List<BookUserDetails> findAllUsers(String Token) throws Exception;
-	BookUserDetails registerNewUser(BookUserDetailsDTO dto) throws Exception;
+	List<BookUserDetails> findAllUsers(String Token);
+	BookUserDetails registerNewUser(BookUserDetailsDTO dto);
 	ResponseDTO UserLogin(LoginDTO dto);
-	Optional<BookUserDetails> updateUser(BookUserDetailsDTO dto,String token) throws Exception;
-	Optional<BookUserDetails> forgotPassword(ForgotPasswordDTO dto) throws Exception;
+	Optional<BookUserDetails> updateUser(BookUserDetailsDTO dto,String token);
+	Optional<BookUserDetails> forgotPassword(ForgotPasswordDTO dto);
 	Optional<BookUserDetails> deleteUser(String token);
 }

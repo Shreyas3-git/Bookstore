@@ -26,11 +26,7 @@ public class UserService implements IUserService
 	private IUserRepository userRepository;
 	
 	@Autowired
-	TokenUtil tokenUtil;
-	
-	@Autowired
-	BookUserDetails user;
-	
+	TokenUtil tokenUtil;	
 	
 	
 	@Override
@@ -50,7 +46,7 @@ public class UserService implements IUserService
 	}
 	
 	@Override
-	public List<BookUserDetails> findAllUsers(String Token) throws Exception 
+	public List<BookUserDetails> findAllUsers(String Token) 
 	{
 		long id = tokenUtil.decodeToken(Token);
 		Optional<BookUserDetails> isUserPresent = userRepository.findById(id);
@@ -61,21 +57,23 @@ public class UserService implements IUserService
 		} 
 		else 
 		{
-			throw new Exception("User not found:");
+			return null;
 		}
 	}
 
 	
 	@Override
-	public BookUserDetails registerNewUser(BookUserDetailsDTO dto) throws Exception
+	public BookUserDetails registerNewUser(BookUserDetailsDTO dto) 
 	{		
 		Optional<BookUserDetails> users = userRepository.findByEmailId(dto.emailId);
 		if (users.isPresent()) 
 		{
-			throw new Exception("User already exist:");
+			log.error("user already present Exception:");
+			return null;
 		}
 		else
 		{
+			BookUserDetails user = new BookUserDetails();
 			user.setFullName(dto.getFullName());
 			user.setEmailId(dto.getEmailId());
 			user.setPassword(dto.getPassword());
@@ -104,7 +102,7 @@ public class UserService implements IUserService
 	}
 
 	@Override
-	public Optional<BookUserDetails> updateUser(BookUserDetailsDTO dto,String token) throws Exception
+	public Optional<BookUserDetails> updateUser(BookUserDetailsDTO dto,String token) 
 	{
 		long id = tokenUtil.decodeToken(token);
 		Optional<BookUserDetails> user = userRepository.findById(id);
@@ -121,12 +119,12 @@ public class UserService implements IUserService
 		else 
 		{
 			log.error("User not found Exception:");
-			throw new Exception("User not found");
+			return null;
 		}
 	}
 
 	@Override
-	public Optional<BookUserDetails> forgotPassword(ForgotPasswordDTO dto) throws Exception
+	public Optional<BookUserDetails> forgotPassword(ForgotPasswordDTO dto) 
 	{
 		if (dto.getNewPassword().equals(dto.getConfirmPassword())) 
 		{
@@ -139,7 +137,7 @@ public class UserService implements IUserService
 		else
 		{
 			log.error("Entered password is not correct:");
-			throw new Exception("Entered password is not correct");
+			return null;
 		}
 	}
 

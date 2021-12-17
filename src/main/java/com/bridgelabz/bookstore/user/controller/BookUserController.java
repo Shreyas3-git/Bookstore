@@ -46,7 +46,7 @@ public class BookUserController
 	}
 
 	@GetMapping("/allusers")
-	public ResponseEntity<ResponseDTO> getAllUsers(@RequestHeader String Token) throws Exception
+	public ResponseEntity<ResponseDTO> getAllUsers(@RequestHeader String Token) 
 	{
 		List<BookUserDetails> retriveAll = bookUserServce.findAllUsers(Token);
 		ResponseDTO dto = new ResponseDTO("All Users fetch successfully:",retriveAll);
@@ -55,7 +55,7 @@ public class BookUserController
 	
 	
 	@PostMapping("/registeruser")
-	public ResponseEntity<ResponseDTO> registerUser(@RequestBody BookUserDetailsDTO signupDTO) throws Exception
+	public ResponseEntity<ResponseDTO> registerUser(@RequestBody BookUserDetailsDTO signupDTO)
 	{
 		BookUserDetails addUser = bookUserServce.registerNewUser(signupDTO);
 		ResponseDTO dto = new ResponseDTO("User registered successfully:",addUser);
@@ -72,7 +72,7 @@ public class BookUserController
 	
 	
 	@PutMapping("/updateuser/{id}")
-	public ResponseEntity<ResponseDTO> updateUserDetails(@RequestBody BookUserDetailsDTO userDTO,@RequestHeader String token) throws Exception
+	public ResponseEntity<ResponseDTO> updateUserDetails(@RequestBody BookUserDetailsDTO userDTO,@RequestHeader String token) 
 	{
 		Optional<BookUserDetails> updateUser = bookUserServce.updateUser(userDTO,token);
 		ResponseDTO dto = new ResponseDTO("User updated successfully:",updateUser);
@@ -80,7 +80,7 @@ public class BookUserController
 	}
 	
 	@PutMapping("/forgotpassword")
-	public ResponseEntity<ResponseDTO> forgotUserPassword(@RequestBody ForgotPasswordDTO passwordDTO) throws Exception
+	public ResponseEntity<ResponseDTO> forgotUserPassword(@RequestBody ForgotPasswordDTO passwordDTO) 
 	{
 		Optional<BookUserDetails> forgotPassword = bookUserServce.forgotPassword(passwordDTO);
 		ResponseDTO dto = new ResponseDTO("password updated successfully:",forgotPassword);
