@@ -32,17 +32,11 @@ public class BookUserController
 	@Autowired
 	private IUserService  bookUserServce;
 	
-	@GetMapping("/verifyuser?emailId")
-	public ResponseEntity<ResponseDTO> verifyUserDetails(@RequestParam String emailId)
+	@GetMapping("/verifyuser")
+	public boolean verifyUserDetails(@RequestParam String emailId)
 	{
 		boolean isuserPresent = bookUserServce.verifyUser(emailId);
-		if (!isuserPresent) {
-			ResponseDTO dto = new ResponseDTO("User verification failed:",isuserPresent);
-			return new ResponseEntity<>(dto,HttpStatus.NOT_ACCEPTABLE);
-		}
-		ResponseDTO dto = new ResponseDTO("User verified successfully",isuserPresent);
-		return new ResponseEntity<>(dto,HttpStatus.OK);
-
+		return isuserPresent;
 	}
 
 	@GetMapping("/allusers")
@@ -50,7 +44,7 @@ public class BookUserController
 	{
 		List<BookUserDetails> retriveAll = bookUserServce.findAllUsers(Token);
 		ResponseDTO dto = new ResponseDTO("All Users fetch successfully:",retriveAll);
-		return new ResponseEntity<>(dto,HttpStatus.FOUND);
+		return new ResponseEntity<>(dto,HttpStatus.OK);
 	}
 	
 	
@@ -87,7 +81,7 @@ public class BookUserController
 		return new ResponseEntity<>(dto,HttpStatus.ACCEPTED);
 	}
 	
-	@DeleteMapping("/deleteuser/{id}")
+	@DeleteMapping("/deleteuser")
 	public ResponseEntity<ResponseDTO> deleteUser(@RequestHeader String token)
 	{
 		Optional<BookUserDetails> deleteUser = bookUserServce.deleteUser(token);

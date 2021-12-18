@@ -15,7 +15,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="users_list")
 @Data
 @NoArgsConstructor
 public class BookUserDetails 
@@ -25,13 +24,14 @@ public class BookUserDetails
 	@Column(name = "user_Id")
 	private long id;
 	private String fullName;
-	@Column(name = "user_DOB")
-	private LocalDate dob;
 	private String address;
+	
 	@Column(name = "register_date")
 	private LocalDate registerDate;
+	
 	@Column(name = "updated_date")
 	private LocalDate updatedDate ;
+	
 	private String emailId;
 	private String password;
 	private String mobile;
@@ -39,16 +39,15 @@ public class BookUserDetails
 	/**
 	 * Conturctor for updating exiting user Data
 	 */
-	public BookUserDetails(long id, String fullName, LocalDate dob, String address, LocalDate registerDate,
+	public BookUserDetails(long id, String fullName, String address, LocalDate registerDate,
 			LocalDate updatedDate, String emailId, String password, String mobile, boolean verify) 
 	{
 		super();
 		this.id = id;
 		this.fullName = fullName;
-		this.dob = dob;
 		this.address = address;
 		this.registerDate = registerDate;
-		this.updatedDate = updatedDate;
+		this.updatedDate = LocalDate.now();
 		this.emailId = emailId;
 		this.password = password;
 		this.mobile = mobile;
@@ -65,7 +64,6 @@ public class BookUserDetails
 	{
 		this.id = id;
 		this.fullName = dto.getFullName();
-		this.dob = dto.getDob();
 		this.address = dto.getAddress();
 		this.registerDate = LocalDate.now();
 		this.emailId = dto.getEmailId();
@@ -83,10 +81,9 @@ public class BookUserDetails
 	{
 		this.id = user.id;
 		this.fullName = user.fullName;
-		this.dob = user.dob;
 		this.address = user.address;
 		this.registerDate = user.registerDate;
-		this.updatedDate = user.registerDate;
+		this.updatedDate = LocalDate.now();
 		this.emailId = user.emailId;
 		this.password = password;
 		this.verify = user.verify;

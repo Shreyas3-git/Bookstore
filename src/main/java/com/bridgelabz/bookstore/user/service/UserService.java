@@ -26,7 +26,7 @@ public class UserService implements IUserService
 	private IUserRepository userRepository;
 	
 	@Autowired
-	TokenUtil tokenUtil;	
+	TokenUtil tokenUtils;	
 	
 	
 	@Override
@@ -48,7 +48,7 @@ public class UserService implements IUserService
 	@Override
 	public List<BookUserDetails> findAllUsers(String Token) 
 	{
-		long id = tokenUtil.decodeToken(Token);
+		long id = tokenUtils.decodeToken(Token);
 		Optional<BookUserDetails> isUserPresent = userRepository.findById(id);
 		if (isUserPresent.isPresent()) 
 		{
@@ -75,9 +75,12 @@ public class UserService implements IUserService
 		{
 			BookUserDetails user = new BookUserDetails();
 			user.setFullName(dto.getFullName());
+			user.setAddress(dto.getAddress());
 			user.setEmailId(dto.getEmailId());
 			user.setPassword(dto.getPassword());
 			user.setMobile(dto.getMobile());
+			user.setRegisterDate(LocalDate.now());
+			tokenUtils.createToken(user.getId());
 			userRepository.save(user);
 			return user;
 		}
@@ -86,12 +89,12 @@ public class UserService implements IUserService
 	@Override
 	public ResponseDTO UserLogin(LoginDTO dto) 
 	{
-		Optional<BookUserDetails> userLogin = userRepository.findByEmailIdAndPassword(dto.email, dto.userPassword);
-		if (userLogin.isPresent()) 
+		Optional<BookUserDetails> user = userRepository.findByEmailIdAndPassword(dto.emailId, dto.password);
+		if (user.isPresent()) 
 		{
-			String token = tokenUtil.createToken(userLogin.get().getId());
+			String token = tokenUtils.createToken(user.get().getId());
 			log.info("user logged in successfully");
-			return new ResponseDTO("String token created sucessfully:",token);
+			return new ResponseDTO("user login sucessful:",token);
 		}
 		else 
 		{
@@ -104,14 +107,14 @@ public class UserService implements IUserService
 	@Override
 	public Optional<BookUserDetails> updateUser(BookUserDetailsDTO dto,String token) 
 	{
-		long id = tokenUtil.decodeToken(token);
+		long id = tokenUtils.decodeToken(token);
 		Optional<BookUserDetails> user = userRepository.findById(id);
 		if (user.isPresent()) 
 		{			
 			user.get().setFullName(dto.getFullName());
 			user.get().setMobile(dto.getMobile());
 			user.get().setEmailId(dto.getEmailId());
-			user.get().setPassword(dto.getPassword());
+			user.get().setAddress(dto.getAddress());
 			user.get().setUpdatedDate(LocalDate.now());
 			userRepository.save(user.get());
 			return user;
@@ -130,6 +133,7 @@ public class UserService implements IUserService
 		{
 			Optional<BookUserDetails> user = userRepository.findByEmailId(dto.getEmailId());
 			user.get().setPassword(dto.getNewPassword());
+			user.get().setUpdatedDate(LocalDate.now());
 			userRepository.save(user.get());
 			return user;
 			
@@ -144,7 +148,7 @@ public class UserService implements IUserService
 	@Override
 	public Optional<BookUserDetails> deleteUser(String token) 
 	{
-		long id = tokenUtil.decodeToken(token);
+		long id = tokenUtils.decodeToken(token);
 		System.out.println("id checked"+id);
 		Optional<BookUserDetails> deleteuser = userRepository.findById(id);
 		if (deleteuser.isPresent()) 

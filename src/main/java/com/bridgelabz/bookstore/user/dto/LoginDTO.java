@@ -13,8 +13,8 @@ public class LoginDTO
 {
 //	@NotBlank(message = "emailId can not be blank")
 //	@Email(message = "Enter Valid email")
-	public String email;
+	public String emailId;
 //	@NotBlank(message = "password can not be blank")
-	public String userPassword;
+	public String password;
 
 }
