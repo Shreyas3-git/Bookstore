@@ -14,7 +14,6 @@ public class BookDetailsDTO
 	public String bookDescription;
 	public double bookPrice;
 	public int quantity;
-	public String bookImage;
 	public double bookRating;
 	public double priceWithoutDiscount;
 

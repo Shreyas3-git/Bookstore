@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "book_items")
+//@Table(name = "book_items")
 public class BookDetails implements Serializable
 {
 	@Id
@@ -31,7 +31,6 @@ public class BookDetails implements Serializable
 	private String bookDescription;
 	private Double bookPrice;
 	private int quantity;
-	private String bookImage;
 	private double bookRating;
 	private double priceWithoutDiscount;
 	
@@ -43,7 +42,6 @@ public class BookDetails implements Serializable
 		this.bookDescription = dto.getBookDescription();
 		this.bookPrice = dto.getBookPrice();
 		this.quantity = dto.getQuantity();
-		this.bookImage = dto.getBookImage();
 		this.bookRating = dto.getBookRating();
 		this.priceWithoutDiscount = dto.getPriceWithoutDiscount();
 	}

@@ -42,10 +42,10 @@ public class BookDetailsController
 	}
 	 
 	@GetMapping("/getBook")
-	public ResponseEntity<ResponseDTO> getOneBook(@RequestParam String name,@RequestParam String emailId) 
+	public ResponseEntity<ResponseDTO> getOneBook(@RequestParam String bookName,@RequestParam String emailId) 
 	{
-		BookDetails getOneBook = bookService.getBookByName(name,emailId);
-		ResponseDTO dto = new ResponseDTO("Book retrived sucessfully for name =>"+name, getOneBook);
+		BookDetails getOneBook = bookService.getBookByName(bookName,emailId);
+		ResponseDTO dto = new ResponseDTO("Book retrived sucessfully for name =>"+bookName, getOneBook);
 		return new ResponseEntity<>(dto,HttpStatus.OK);
 	}
 	
@@ -79,6 +79,7 @@ public class BookDetailsController
 	public ResponseEntity<ResponseDTO> addBook(@RequestBody BookDetailsDTO bookDto,@RequestParam String emailId)
 	{
 		BookDetails addBook = bookService.insertBook(emailId,bookDto);
+		System.out.println(addBook);
 		ResponseDTO dto = new ResponseDTO("Book added sucessfully ", addBook);
 		return new ResponseEntity<>(dto,HttpStatus.CREATED);
 	}			

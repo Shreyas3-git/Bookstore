@@ -52,14 +52,14 @@ public class BookService implements IBookService
 	}
 
 	@Override
-	public BookDetails getBookByName(String name,String emailId) 
+	public BookDetails getBookByName(String bookName,String emailId) 
 	{
 		boolean isuserPresent = restTemplate.getForObject("http://localhost:8088/verifyuser?emailId"+emailId, boolean.class);
 		if (!isuserPresent) 
 		{
 			return null;
 		} 
-		BookDetails getOneBook = bookRepository.findByBookName(name).orElse(null);
+		BookDetails getOneBook = bookRepository.findByBookName(bookName).orElse(null);
 		return getOneBook;
 
 	}
@@ -116,19 +116,27 @@ public class BookService implements IBookService
 	public BookDetails insertBook(String emailId,BookDetailsDTO dto) //throws Exception
 	{
 		boolean isUserPresent = restTemplate.getForObject("http://localhost:8088/verifyuser?emailId"+emailId, boolean.class);
+		System.out.println("is userPresen:"+isUserPresent);
 		if (isUserPresent) 
 		{
 			Optional<BookDetails> searchBookByName = bookRepository.findByBookName(dto.getBookName());
 			if (!searchBookByName.isPresent()) 
 			{
 				BookDetails book = new BookDetails(dto);
+				book.setBookAuthor(dto.getBookAuthor());
+				book.setBookDescription(dto.getBookDescription());
+				book.setBookName(dto.getBookName());
+				book.setBookPrice(dto.getBookPrice());
+				book.setQuantity(dto.getQuantity());
+				book.setBookRating(dto.getBookRating());
+				book.setPriceWithoutDiscount(dto.getPriceWithoutDiscount());
 				bookRepository.save(book);
 				return book;
 			}
 			log.error("Book is already present is Bookstore:");
 			return null;
 		} 
-		log.error("user already exist try with different email:");
+		log.error("user not exist try with different email:");
 		return null;
 	}
 
@@ -148,7 +156,6 @@ public class BookService implements IBookService
 				bookEntity.get().setBookName(dto.getBookName());
 				bookEntity.get().setBookAuthor(dto.getBookAuthor());
 				bookEntity.get().setBookDescription(dto.getBookDescription());
-				bookEntity.get().setBookImage(dto.getBookImage());
 				bookEntity.get().setBookPrice(dto.getBookPrice());
 				bookEntity.get().setQuantity(dto.getQuantity());
 				bookEntity.get().setBookRating(dto.getBookRating());
